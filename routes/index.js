@@ -17,7 +17,7 @@ router.get('/contact', function(req, res, next) {
 });
 
 router.get('/register', function(req, res, next) {
-  return res.send("Register today!");
+  return res.render('register', {title: 'Sign Up'});
 });
 
 router.post('/register', function(req, res, next) {
