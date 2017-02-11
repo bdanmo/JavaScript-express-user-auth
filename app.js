@@ -1,9 +1,17 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var session = require('express-session');
 var app = express();
 
-//mongodb connection
+//use sessions for tracking logins
+app.use(session({
+  secret: 'dabbles of gumbleclone',
+  resave: true,
+  saveUninitialized: false
+}));
+
+//mongodb connection/create bookworm db
 mongoose.connect('mongodb://localhost:27017/bookworm');
 var db = mongoose.connection;
 //mongo error
