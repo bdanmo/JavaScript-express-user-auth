@@ -48,5 +48,5 @@ UserSchema.pre('save', function(next) {
   })
 });
 
-const User = mongoose.model('User', UserSchema); //the actual creation of the model, according to the schema
+const User = mongoose.model('User', UserSchema); //the actual creation of a collection in mongoDB called "User", patterned after the userSchema object
 module.exports = User;
