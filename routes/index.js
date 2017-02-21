@@ -20,7 +20,7 @@ router.get('/contact', (req, res, next) => {
 });
 
 //GET /profile
-router.get('/profile', mid.requireLogin, (req, res, next) => {
+router.get('/profile', mid.requiresLogin, (req, res, next) => {
   User.findById(req.session.userId)
     .exec( ( err, user ) => {
       if (err) return next(err);
