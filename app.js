@@ -1,27 +1,32 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var session = require('express-session');
-var app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const mongoStore = require('connect-mongo')(session);
+const app = express();
+
+
+//mongodb connection/create bookworm db
+mongoose.connect('mongodb://localhost:27017/bookworm');
+const db = mongoose.connection;
+//mongo error
+db.on('error', console.error.bind(console, 'connection error:'));
 
 //use sessions for tracking logins
 app.use(session({
   secret: 'dabbles of gumbleclone',
   resave: true,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new mongoStore({
+    mongooseConnection: db //referring to mongoose connection created above
+  })
 }));
 
 //make user ID available in templates
 app.use( (req, res, next) => {
   res.locals.currentUser = req.session.userId;
   next();
-})
-
-//mongodb connection/create bookworm db
-mongoose.connect('mongodb://localhost:27017/bookworm');
-var db = mongoose.connection;
-//mongo error
-db.on('error', console.error.bind(console, 'connection error:'));
+});
 
 // parse incoming requests
 app.use(bodyParser.json());
@@ -35,12 +40,12 @@ app.set('view engine', 'pug');
 app.set('views', __dirname + '/views');
 
 // include routes
-var routes = require('./routes/index');
+const routes = require('./routes/index');
 app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('File Not Found');
+  let err = new Error('File Not Found');
   err.status = 404;
   next(err);
 });

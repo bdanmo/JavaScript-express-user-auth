@@ -1,8 +1,8 @@
 
-var express = require('express');
-var router = express.Router();
-var User = require('../models/user');
-var mid = require('../middleware');
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user');
+const mid = require('../middleware');
 
 // GET /
 router.get('/', (req, res, next) => {
